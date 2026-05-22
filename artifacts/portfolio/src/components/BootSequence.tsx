@@ -2,7 +2,7 @@ import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
-const PIXEL_SIZE = 8;
+const PIXEL_SIZE = 4;
 
 export function BootSequence({ onComplete }: { onComplete: () => void }) {
   const [phase, setPhase] = useState<"build" | "dissolve" | "window" | "done">("build");
@@ -14,7 +14,7 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
   const maxDist = Math.sqrt((cols / 2) ** 2 + (rows / 2) ** 2);
 
   const pixels = useMemo(() => {
-    const palette = ['#1a0033', '#0d0020', '#2d0050', '#3a0066', '#ff00aa22', '#1a001a', '#260040', '#0a0014'];
+    const palette = ['#000000', '#0a0005', '#ff00aa', '#cc0077', '#ff44bb', '#000000', '#ff0099', '#110000'];
     return Array.from({ length: cols * rows }).map((_, i) => {
       const x = i % cols;
       const y = Math.floor(i / cols);
@@ -29,7 +29,7 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
     });
   }, [cols, rows, centerX, centerY, maxDist]);
 
-  const BUILD_DURATION = 1.8; // total seconds for all pixels to appear
+  const BUILD_DURATION = 0.9; // total seconds for all pixels to appear
 
   useEffect(() => {
     // After all pixels have appeared, dissolve them
