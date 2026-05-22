@@ -45,16 +45,6 @@ export default function Desktop() {
             WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)',
           }}
         />
-        {/* Horizontal glow line at grid horizon */}
-        <div style={{
-          position: 'absolute',
-          bottom: '35%',
-          left: 0,
-          right: 0,
-          height: '2px',
-          background: 'linear-gradient(90deg, transparent 0%, rgba(255,0,170,0.9) 20%, rgba(255,100,200,1) 50%, rgba(255,0,170,0.9) 80%, transparent 100%)',
-          boxShadow: '0 0 18px 4px rgba(255,0,170,0.5)',
-        }} />
       </div>
 
       {/* Star Particles */}

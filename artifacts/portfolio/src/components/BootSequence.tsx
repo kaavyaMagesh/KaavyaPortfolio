@@ -19,11 +19,19 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
   const centerX = cols / 2;
   const centerY = rows / 2;
 
+  const maxDist = Math.sqrt(Math.pow(cols / 2, 2) + Math.pow(rows / 2, 2));
+
   const pixels = Array.from({ length: cols * rows }).map((_, i) => {
     const x = i % cols;
     const y = Math.floor(i / cols);
-    const dist = Math.sqrt(Math.pow(x - centerX, 2) + Math.pow(y - centerY, 2));
-    return { id: i, dist, x, y };
+    const dx = x - centerX;
+    const dy = y - centerY;
+    const dist = Math.sqrt(dx * dx + dy * dy);
+    // Angle in [0, 2π] — spiral winds clockwise from top
+    const angle = (Math.atan2(dy, dx) + Math.PI * 2) % (Math.PI * 2);
+    // Spiral delay: distance drives the main expansion, angle adds the twist
+    const spiralOrder = dist / maxDist + angle / (Math.PI * 2) * 0.4;
+    return { id: i, spiralOrder };
   });
 
   return (
@@ -41,7 +49,7 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
                   }}
                   initial={{ opacity: 1 }}
                   animate={{ opacity: pixelsCleared ? 0 : 1 }}
-                  transition={{ delay: pixelsCleared ? p.dist * 0.05 : 0, duration: 0.2 }}
+                  transition={{ delay: pixelsCleared ? p.spiralOrder * 1.2 : 0, duration: 0.15 }}
                 />
               ))}
             </div>
