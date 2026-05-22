@@ -14,8 +14,8 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
     return () => clearTimeout(timer);
   }, []);
 
-  const cols = Math.ceil(window.innerWidth / 40);
-  const rows = Math.ceil(window.innerHeight / 40);
+  const cols = Math.ceil(window.innerWidth / 6);
+  const rows = Math.ceil(window.innerHeight / 6);
   const centerX = cols / 2;
   const centerY = rows / 2;
 
@@ -39,11 +39,11 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
       {phase !== "done" && (
         <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
           {phase === "pixels" && (
-            <div className="absolute inset-0 flex flex-wrap" style={{ width: cols * 40, height: rows * 40 }}>
+            <div className="absolute inset-0 flex flex-wrap" style={{ width: cols * 6, height: rows * 6 }}>
               {pixels.map((p) => (
                 <motion.div
                   key={p.id}
-                  className="w-[40px] h-[40px]"
+                  className="w-[6px] h-[6px]"
                   style={{
                     backgroundColor: Math.random() > 0.5 ? '#0a0014' : '#1a0033',
                   }}
