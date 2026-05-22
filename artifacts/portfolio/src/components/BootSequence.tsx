@@ -1,94 +1,131 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useTypewriter } from "@/hooks/useTypewriter";
 
+const PIXEL_SIZE = 8;
+
 export function BootSequence({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase] = useState<"pixels" | "window" | "done">("pixels");
-  const [pixelsCleared, setPixelsCleared] = useState(false);
+  const [phase, setPhase] = useState<"build" | "dissolve" | "window" | "done">("build");
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setPixelsCleared(true);
-      setTimeout(() => setPhase("window"), 1500);
-    }, 500);
-    return () => clearTimeout(timer);
-  }, []);
-
-  const cols = Math.ceil(window.innerWidth / 6);
-  const rows = Math.ceil(window.innerHeight / 6);
+  const cols = useMemo(() => Math.ceil(window.innerWidth / PIXEL_SIZE), []);
+  const rows = useMemo(() => Math.ceil(window.innerHeight / PIXEL_SIZE), []);
   const centerX = cols / 2;
   const centerY = rows / 2;
+  const maxDist = Math.sqrt((cols / 2) ** 2 + (rows / 2) ** 2);
 
-  const maxDist = Math.sqrt(Math.pow(cols / 2, 2) + Math.pow(rows / 2, 2));
+  const pixels = useMemo(() => {
+    const palette = ['#1a0033', '#0d0020', '#2d0050', '#3a0066', '#ff00aa22', '#1a001a', '#260040', '#0a0014'];
+    return Array.from({ length: cols * rows }).map((_, i) => {
+      const x = i % cols;
+      const y = Math.floor(i / cols);
+      const dx = x - centerX;
+      const dy = y - centerY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      const angle = (Math.atan2(dy, dx) + Math.PI * 2) % (Math.PI * 2);
+      // Spiral order: distance is primary, angle adds the clockwise twist
+      const spiralOrder = dist / maxDist + (angle / (Math.PI * 2)) * 0.45;
+      const color = palette[Math.floor(Math.random() * palette.length)];
+      return { id: i, spiralOrder, color };
+    });
+  }, [cols, rows, centerX, centerY, maxDist]);
 
-  const pixels = Array.from({ length: cols * rows }).map((_, i) => {
-    const x = i % cols;
-    const y = Math.floor(i / cols);
-    const dx = x - centerX;
-    const dy = y - centerY;
-    const dist = Math.sqrt(dx * dx + dy * dy);
-    // Angle in [0, 2π] — spiral winds clockwise from top
-    const angle = (Math.atan2(dy, dx) + Math.PI * 2) % (Math.PI * 2);
-    // Spiral delay: distance drives the main expansion, angle adds the twist
-    const spiralOrder = dist / maxDist + angle / (Math.PI * 2) * 0.4;
-    return { id: i, spiralOrder };
-  });
+  const BUILD_DURATION = 1.8; // total seconds for all pixels to appear
+
+  useEffect(() => {
+    // After all pixels have appeared, dissolve them
+    const dissolveTimer = setTimeout(() => {
+      setPhase("dissolve");
+    }, BUILD_DURATION * 1000 + 200);
+
+    // After dissolve, show boot window
+    const windowTimer = setTimeout(() => {
+      setPhase("window");
+    }, BUILD_DURATION * 1000 + 200 + 400);
+
+    return () => {
+      clearTimeout(dissolveTimer);
+      clearTimeout(windowTimer);
+    };
+  }, []);
 
   return (
     <AnimatePresence>
       {phase !== "done" && (
-        <div className="fixed inset-0 z-[9999] flex items-center justify-center pointer-events-none">
-          {phase === "pixels" && (
-            <div className="absolute inset-0 flex flex-wrap" style={{ width: cols * 6, height: rows * 6 }}>
+        <div className="fixed inset-0 z-[9999] pointer-events-none">
+          {/* Black base */}
+          <motion.div
+            className="absolute inset-0 bg-black"
+            animate={{ opacity: phase === "dissolve" || phase === "window" ? 0 : 1 }}
+            transition={{ duration: 0.4 }}
+          />
+
+          {/* Pixel grid — appears in spiral, then dissolves together */}
+          {(phase === "build" || phase === "dissolve") && (
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{ display: 'flex', flexWrap: 'wrap', width: cols * PIXEL_SIZE, height: rows * PIXEL_SIZE }}
+            >
               {pixels.map((p) => (
                 <motion.div
                   key={p.id}
-                  className="w-[6px] h-[6px]"
                   style={{
-                    backgroundColor: Math.random() > 0.5 ? '#0a0014' : '#1a0033',
+                    width: PIXEL_SIZE,
+                    height: PIXEL_SIZE,
+                    backgroundColor: p.color,
+                    flexShrink: 0,
                   }}
-                  initial={{ opacity: 1 }}
-                  animate={{ opacity: pixelsCleared ? 0 : 1 }}
-                  transition={{ delay: pixelsCleared ? p.spiralOrder * 1.2 : 0, duration: 0.15 }}
+                  initial={{ opacity: 0 }}
+                  animate={{
+                    opacity: phase === "dissolve" ? 0 : 1,
+                  }}
+                  transition={
+                    phase === "build"
+                      ? { delay: p.spiralOrder * BUILD_DURATION * 0.85, duration: 0.08, ease: "easeOut" }
+                      : { duration: 0.35, ease: "easeIn" }
+                  }
                 />
               ))}
             </div>
           )}
 
+          {/* Boot protocol window */}
           {phase === "window" && (
-            <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 1.2, opacity: 0 }}
-              className="cyber-window relative bg-black/80 w-[500px] max-w-[90vw] pointer-events-auto"
-              data-testid="boot-window"
-            >
-              <div className="bg-primary/20 border-b border-primary p-2 flex items-center">
-                <div className="flex gap-1.5 ml-1">
-                  <div className="w-3 h-3 rounded-full bg-red-500" />
-                  <div className="w-3 h-3 rounded-full bg-yellow-500" />
-                  <div className="w-3 h-3 rounded-full bg-green-500" />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-auto">
+              <motion.div
+                initial={{ scale: 0.85, opacity: 0 }}
+                animate={{ scale: 1, opacity: 1 }}
+                exit={{ scale: 1.1, opacity: 0 }}
+                transition={{ duration: 0.3 }}
+                className="cyber-window relative bg-black/85 w-[500px] max-w-[90vw]"
+                data-testid="boot-window"
+              >
+                <div className="bg-primary/20 border-b border-primary p-2 flex items-center">
+                  <div className="flex gap-1.5 ml-1">
+                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <div className="w-3 h-3 rounded-full bg-yellow-500" />
+                    <div className="w-3 h-3 rounded-full bg-green-500" />
+                  </div>
+                  <span className="ml-4 font-heading text-primary font-bold">INIT_PROTOCOL.exe</span>
                 </div>
-                <span className="ml-4 font-heading text-primary font-bold">INIT_PROTOCOL.exe</span>
-              </div>
-              <div className="p-6 font-mono text-primary-foreground min-h-[250px] flex flex-col text-sm md:text-base leading-relaxed">
-                <BootText />
-                <motion.button
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 3.5 }}
-                  onClick={() => {
-                    setPhase("done");
-                    setTimeout(onComplete, 300);
-                  }}
-                  className="mt-auto self-end bg-primary/20 border border-primary text-primary hover:bg-primary hover:text-black px-6 py-2 uppercase font-bold tracking-widest transition-all duration-300"
-                  style={{ boxShadow: 'var(--cyber-glow)' }}
-                  data-testid="boot-enter"
-                >
-                  [ ENTER ]
-                </motion.button>
-              </div>
-            </motion.div>
+                <div className="p-6 font-mono text-primary-foreground min-h-[250px] flex flex-col text-sm md:text-base leading-relaxed">
+                  <BootText />
+                  <motion.button
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 3.5 }}
+                    onClick={() => {
+                      setPhase("done");
+                      setTimeout(onComplete, 300);
+                    }}
+                    className="mt-auto self-end bg-primary/20 border border-primary text-primary hover:bg-primary hover:text-black px-6 py-2 uppercase font-bold tracking-widest transition-all duration-300"
+                    style={{ boxShadow: 'var(--cyber-glow)' }}
+                    data-testid="boot-enter"
+                  >
+                    [ ENTER ]
+                  </motion.button>
+                </div>
+              </motion.div>
+            </div>
           )}
         </div>
       )}
