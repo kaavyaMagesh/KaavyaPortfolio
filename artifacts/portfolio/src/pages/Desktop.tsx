@@ -12,40 +12,74 @@ export default function Desktop() {
 
   return (
     <div className="relative w-screen h-screen overflow-hidden bg-background text-foreground">
-      {/* Background Elements */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#1a0033] via-[#0d0020] to-[#020008]" />
-      
-      {/* Grid Lines */}
-      <div 
-        className="absolute inset-0 opacity-5 pointer-events-none"
+      {/* Galaxy wallpaper background */}
+      <div
+        className="absolute inset-0"
         style={{
-          backgroundImage: `
-            linear-gradient(to right, #ff00aa 1px, transparent 1px),
-            linear-gradient(to bottom, #ff00aa 1px, transparent 1px)
-          `,
-          backgroundSize: '100px 100px',
-          transform: 'perspective(500px) rotateX(60deg) translateY(100px) translateZ(-200px)',
-          transformOrigin: 'bottom'
+          backgroundImage: 'url(/galaxy-bg.png)',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
         }}
       />
-      
+      {/* Dark overlay to deepen the space feel */}
+      <div className="absolute inset-0" style={{ background: 'rgba(4,0,14,0.45)' }} />
+
+      {/* Perspective neon grid — bottom half, like image 2 */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: '-20%',
+            right: '-20%',
+            height: '65%',
+            backgroundImage: `
+              linear-gradient(rgba(255,0,170,0.55) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(255,0,170,0.55) 1px, transparent 1px)
+            `,
+            backgroundSize: '80px 80px',
+            transform: 'perspective(600px) rotateX(72deg)',
+            transformOrigin: 'bottom center',
+            maskImage: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)',
+            WebkitMaskImage: 'linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0.3) 50%, transparent 100%)',
+          }}
+        />
+        {/* Horizontal glow line at grid horizon */}
+        <div style={{
+          position: 'absolute',
+          bottom: '35%',
+          left: 0,
+          right: 0,
+          height: '2px',
+          background: 'linear-gradient(90deg, transparent 0%, rgba(255,0,170,0.9) 20%, rgba(255,100,200,1) 50%, rgba(255,0,170,0.9) 80%, transparent 100%)',
+          boxShadow: '0 0 18px 4px rgba(255,0,170,0.5)',
+        }} />
+      </div>
+
       {/* Star Particles */}
-      <div className="absolute inset-0 opacity-50">
-        {Array.from({ length: 50 }).map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full bg-white animate-pulse"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-              width: Math.random() * 3 + 'px',
-              height: Math.random() * 3 + 'px',
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${Math.random() * 3 + 2}s`,
-              boxShadow: '0 0 4px #ff00aa'
-            }}
-          />
-        ))}
+      <div className="absolute inset-0 pointer-events-none">
+        {Array.from({ length: 80 }).map((_, i) => {
+          const size = Math.random() * 2.5 + 0.5;
+          const isPink = Math.random() > 0.6;
+          return (
+            <div
+              key={i}
+              className="absolute rounded-full animate-pulse"
+              style={{
+                top: `${Math.random() * 70}%`,
+                left: `${Math.random() * 100}%`,
+                width: size + 'px',
+                height: size + 'px',
+                background: isPink ? '#ff88cc' : '#ffffff',
+                animationDelay: `${Math.random() * 6}s`,
+                animationDuration: `${Math.random() * 3 + 2}s`,
+                boxShadow: isPink ? `0 0 ${size * 3}px rgba(255,0,170,0.9)` : `0 0 ${size * 2}px rgba(255,255,255,0.8)`,
+                opacity: Math.random() * 0.5 + 0.5,
+              }}
+            />
+          );
+        })}
       </div>
 
       <div className="scan-lines" />
