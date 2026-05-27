@@ -28,7 +28,7 @@ export default function Desktop() {
   // Ping visitor tracking endpoint when portfolio loads
   useEffect(() => {
     if (bootComplete) {
-      fetch("/api/visitors/ping", { method: "POST" }).catch(() => {
+      fetch("/api/visitors", { method: "POST" }).catch(() => {
         // Silently fail — analytics should never break the portfolio
       });
     }
