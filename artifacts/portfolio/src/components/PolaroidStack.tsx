@@ -22,21 +22,21 @@ export function PolaroidStack() {
 
   const basePolaroids = [
     { id: 1, color: "from-pink-500 to-purple-600", label: "HACKATHON", icon: Trophy, baseRotate: -6, baseX: 0, baseY: 0 },
-    { id: 2, color: "from-blue-500 to-cyan-400", label: "SEC_ELITE", icon: Shield, baseRotate: 4, baseX: 25, baseY: -12 },
+    { id: 2, color: "from-blue-500 to-cyan-400", label: "ETHICAL HACKING", icon: Shield, baseRotate: 4, baseX: 25, baseY: -12 },
     { id: 3, color: "from-purple-500 to-indigo-600", label: "BLOCKCHAIN", icon: Link2, baseRotate: -3, baseX: 12, baseY: 25 },
   ];
 
   return (
     <>
       {/* Photo stack wrapper placed on the right of the camera */}
-      <div 
+      <div
         className="absolute top-8 left-[360px] w-[240px] h-[220px] flex flex-col items-center justify-between cursor-pointer group z-40"
         onClick={() => setIsOpen(true)}
       >
         <div className="relative w-full h-[160px]">
           {basePolaroids.map((p, index) => {
             const rank = order.indexOf(index); // 0 (bottom) to 2 (top)
-            
+
             // Calculate offsets that dynamically shift based on card rank for depth feel
             const xOffset = p.baseX + (rank * 6);
             const yOffset = p.baseY - (rank * 4);
@@ -83,7 +83,7 @@ export function PolaroidStack() {
             );
           })}
         </div>
-        
+
         {/* Desktop icon label below the achievements stack */}
         <span className="font-mono text-sm sm:text-base font-black text-primary drop-shadow-[0_0_10px_rgba(255,0,170,0.9)] tracking-widest uppercase bg-black/85 px-3 py-1 border border-primary/40 group-hover:bg-primary/30 group-hover:border-primary transition-all shadow-[0_0_8px_rgba(255,0,170,0.25)] select-none">
           Achievements
@@ -92,10 +92,10 @@ export function PolaroidStack() {
 
       <AnimatePresence>
         {isOpen && (
-          <DraggableWindow 
-            title="SYSTEM_ACHIEVEMENTS.txt" 
-            onClose={() => setIsOpen(false)} 
-            initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 250 : 450, y: 150 }} 
+          <DraggableWindow
+            title="SYSTEM_ACHIEVEMENTS.txt"
+            onClose={() => setIsOpen(false)}
+            initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 250 : 450, y: 150 }}
             id="window-achievements"
             className="w-[500px]"
           >
@@ -112,9 +112,9 @@ export function PolaroidStack() {
                   <p className="font-sans text-sm sm:text-[15px] text-foreground font-medium leading-relaxed">
                     Secured <span className="text-primary font-black">2nd Place</span> among 280+ teams in GDG GOC TechSprint Hackathon for building <span className="text-primary font-black">FixCity</span>.
                   </p>
-                  <a 
-                    href="https://drive.google.com/file/d/1sLE3TDmb3s4dl7kE8o0JugFfPEeSiJBR/view" 
-                    target="_blank" 
+                  <a
+                    href="https://drive.google.com/file/d/1sLE3TDmb3s4dl7kE8o0JugFfPEeSiJBR/view"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono border border-primary/40 text-primary hover:bg-primary hover:text-black transition-colors rounded font-bold"
                   >
@@ -131,9 +131,9 @@ export function PolaroidStack() {
                   <p className="font-sans text-sm sm:text-[15px] text-foreground font-medium leading-relaxed">
                     NPTEL Ethical Hacking — <span className="text-cyan-400 font-black">Elite + Silver Certification</span>
                   </p>
-                  <a 
-                    href="https://drive.google.com/file/d/1kft8sEZSUGRdZXfxSUr_HE9OdfysbGdM/view" 
-                    target="_blank" 
+                  <a
+                    href="https://drive.google.com/file/d/1kft8sEZSUGRdZXfxSUr_HE9OdfysbGdM/view"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono border border-cyan-500/40 text-cyan-400 hover:bg-cyan-500 hover:text-black transition-colors rounded font-bold"
                   >
@@ -150,9 +150,9 @@ export function PolaroidStack() {
                   <p className="font-sans text-sm sm:text-[15px] text-foreground font-medium leading-relaxed">
                     NPTEL Blockchain and its Applications — <span className="text-emerald-400 font-black">Elite + Silver Certification</span>
                   </p>
-                  <a 
-                    href="https://drive.google.com/file/d/1RqUZg2ahDHVRWf6cCs1IpKwhCKpjKE97/view?usp=sharing" 
-                    target="_blank" 
+                  <a
+                    href="https://drive.google.com/file/d/1RqUZg2ahDHVRWf6cCs1IpKwhCKpjKE97/view?usp=sharing"
+                    target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-mono border border-emerald-500/40 text-emerald-400 hover:bg-emerald-500 hover:text-black transition-colors rounded font-bold"
                   >
