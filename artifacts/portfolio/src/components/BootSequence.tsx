@@ -45,7 +45,7 @@ export function BootSequence({ onComplete }: { onComplete: () => void }) {
             </div>
             <div className="p-6 font-mono text-primary-foreground min-h-[300px] flex flex-col text-sm md:text-base leading-relaxed">
               <BootText showLoadingBar={showLoadingBar} showWelcome={showWelcome} />
-              
+
               <motion.button
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -72,24 +72,24 @@ function BootText({ showLoadingBar, showWelcome }: { showLoadingBar: boolean; sh
   const line1 = useTypewriter("SYSTEM BOOT... OK", 25, 0);
   const line2 = useTypewriter("IDENTIFYING USER... GUEST", 25, 800);
   const line3 = useTypewriter("STATUS: ONLINE ✓", 25, 1600);
-  const line4 = useTypewriter("Welcome to the Kaavya's Portfolio", 25, 3200);
+  const line4 = useTypewriter("Welcome to Kaavya's Portfolio", 25, 3200);
 
   return (
     <div className="flex flex-col gap-3">
       <div className="h-6 font-bold text-gray-300">{line1.displayedText}</div>
       <div className="h-6 font-bold text-accent">{line2.displayedText}</div>
       <div className="h-6 font-bold text-green-400">{line3.displayedText}</div>
-      
+
       {/* Loading bar */}
       <div className="h-8 flex flex-col justify-center">
         {showLoadingBar && (
-          <motion.div 
+          <motion.div
             className="w-full h-3 border border-primary/50 bg-black/60 p-[1.5px] relative overflow-hidden"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
           >
-            <motion.div 
+            <motion.div
               className="h-full bg-primary"
               initial={{ width: 0 }}
               animate={{ width: "100%" }}
