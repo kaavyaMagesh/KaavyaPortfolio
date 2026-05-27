@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Share+Tech+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=JetBrains+Mono:wght@400;500;700;800&family=Share+Tech+Mono&display=swap');
 @import "tailwindcss";
 @import "tw-animate-css";
 @plugin "@tailwindcss/typography";
@@ -14,7 +14,7 @@
 
   --color-card: hsl(var(--card));
   --color-card-foreground: hsl(var(--card-foreground));
-  --color-card-border: hsl(var(--card-border));
+  --color-card-border: var(--card-border);
 
   --color-popover: hsl(var(--popover));
   --color-popover-foreground: hsl(var(--popover-foreground));
@@ -40,9 +40,9 @@
   --color-destructive-foreground: hsl(var(--destructive-foreground));
   --color-destructive-border: var(--destructive-border);
 
-  --font-sans: 'Share Tech Mono', monospace;
+  --font-sans: "Cascadia Code", "JetBrains Mono", Monaco, Consolas, monospace;
   --font-serif: Georgia, serif;
-  --font-mono: 'Share Tech Mono', monospace;
+  --font-mono: "Cascadia Code", "JetBrains Mono", Monaco, Consolas, monospace;
   --font-heading: 'Orbitron', sans-serif;
 
   --radius-sm: calc(var(--radius) - 4px);
@@ -73,9 +73,9 @@
   --destructive: 0 100% 50%;
   --destructive-foreground: 0 0% 100%;
 
-  --app-font-sans: 'Share Tech Mono', monospace;
+  --app-font-sans: "Cascadia Code", "JetBrains Mono", Monaco, Consolas, monospace;
   --app-font-serif: Georgia, serif;
-  --app-font-mono: 'Share Tech Mono', monospace;
+  --app-font-mono: "Cascadia Code", "JetBrains Mono", Monaco, Consolas, monospace;
   
   --radius: .5rem;
 
@@ -166,4 +166,23 @@
 
 .cursor-blink {
   animation: blink 1s step-end infinite;
+}
+
+/* Custom Neon Scrollbar */
+.neon-scrollbar::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+.neon-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255, 0, 170, 0.2);
+  border-radius: 4px;
+}
+.neon-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 4px;
+  box-shadow: 0 0 8px rgba(255, 0, 170, 0.8);
+}
+.neon-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #ff66cc;
 }

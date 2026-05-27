@@ -1,24 +1,112 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DraggableWindow } from "./DraggableWindow";
+import { Folder, Code, Terminal, Layers } from "lucide-react";
 
 export function CameraWidget() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleOpenProjects = () => setIsOpen(true);
+    window.addEventListener("open-projects", handleOpenProjects);
+    return () => window.removeEventListener("open-projects", handleOpenProjects);
+  }, []);
+
+  const projects = [
+    {
+      name: "Sherlock — Fintech Fraud Detection",
+      meta: "Full-Stack · ML · Graph Theory · Jun–Jul 2025",
+      tech: ["React", "Node.js", "PostgreSQL", "WebSockets", "Tailwind", "Framer Motion"],
+      desc: [
+        "Real-time Supply Chain Finance fraud detection system using a multi-layer risk engine.",
+        "Graph theory + ML clustering (PCA/K-Means) to detect circular trade patterns."
+      ],
+      color: "from-blue-600 to-purple-800",
+      github: "https://github.com/kaavyaMagesh/sherlock-scf-fraud-detection-system"
+    },
+    {
+      name: "FixCity — Civic Hazard Reporting",
+      meta: "Mobile · AI · Flutter",
+      tech: ["Flutter", "Firebase", "Gemini API", "OpenStreetMaps"],
+      desc: [
+        "Integrates Gemini API to classify civic hazards and assess severity.",
+        "GPS-based real-time hazard reporting with live status tracking.",
+        "🥈 2nd Place among 280+ teams — GDG GOC TechSprint Hackathon."
+      ],
+      color: "from-pink-600 to-rose-900",
+      github: "https://github.com/kaavyaMagesh/fixcity"
+    },
+    {
+      name: "WorkVerse — Professional Network Platform",
+      meta: "Full-Stack · Social · Web",
+      tech: ["React", "Node.js", "Express", "MySQL", "JWT", "Multer"],
+      desc: [
+        "Professional networking and job platform with JWT authentication and RBAC.",
+        "Feeds, search (users/posts/hashtags), one-to-one messaging, and connection workflows."
+      ],
+      color: "from-purple-600 to-indigo-900",
+      github: "https://github.com/kaavyaMagesh/Workverse"
+    },
+    {
+      name: "Crop Disease Detection",
+      meta: "Machine Learning · Computer Vision",
+      tech: ["Python", "TensorFlow/Keras", "MobileNetV2", "OpenCV"],
+      desc: [
+        "CNN-based crop disease classifier using MobileNetV2 transfer learning.",
+        "~90% validation accuracy with data augmentation.",
+        "Inference pipeline with disease classification, confidence scores, and treatment recommendations."
+      ],
+      color: "from-emerald-600 to-teal-900",
+      github: "https://github.com/kaavyaMagesh/crop_disease_prediction_model"
+    },
+    {
+      name: "Legal Analyser",
+      meta: "ML · NLP · Collaborative",
+      tech: ["Python", "Flask", "BERT", "BART", "OCR", "spaCy"],
+      desc: [
+        "NLP system for legal document summarization, risk detection, and clause extraction."
+      ],
+      color: "from-indigo-600 to-violet-900",
+      github: "https://github.com/kaavyaMagesh/legal-analyser"
+    },
+    {
+      name: "HugFit — AI Wellness App",
+      meta: "Mobile · AI · Flutter",
+      tech: ["Flutter", "Firebase", "Gemini API"],
+      desc: [
+        "AI-driven wellness application with mood-aware coaching, journaling, and habit tracking."
+      ],
+      color: "from-cyan-600 to-sky-900",
+      github: "https://github.com/kaavyaMagesh/HugFit-Mental-Wellness-App"
+    },
+    {
+      name: "Employee Salary Predictor",
+      meta: "Machine Learning · Regression",
+      tech: ["Python", "pandas", "scikit-learn", "matplotlib", "seaborn"],
+      desc: [
+        "Multivariate regression model predicting salaries from experience, education, and domain.",
+        "Data cleaning, analysis, and visualization to evaluate model performance."
+      ],
+      color: "from-orange-600 to-amber-900",
+      github: "https://github.com/kaavyaMagesh/Employee-Salary-Prediction-M.Kaavyashri"
+    }
+  ];
 
   return (
     <>
       <motion.div
         className="absolute top-8 left-8 flex flex-col items-center gap-2 cursor-pointer group"
-        whileHover={{ scale: 1.04 }}
+        initial={{ scale: 1.25 }}
+        whileHover={{ scale: 1.30 }}
         onClick={() => setIsOpen(true)}
         data-testid="widget-camera"
-        style={{ filter: 'drop-shadow(0 0 18px rgba(255,0,170,0.55))' }}
+        style={{ 
+          filter: 'drop-shadow(0 0 18px rgba(255,0,170,0.55))',
+          transformOrigin: 'top left'
+        }}
       >
-        {/* Label above */}
-        <span className="font-mono text-[10px] text-primary/80 tracking-widest uppercase mb-1 group-hover:text-primary transition-colors">GALACTIC VIEWPORT</span>
-
         {/* Camera body */}
-        <div className="relative" style={{ width: 220, height: 155 }}>
+        <div className="relative mb-2" style={{ width: 220, height: 155 }}>
           {/* Main body */}
           <div
             className="absolute inset-0 rounded-[18px]"
@@ -55,11 +143,11 @@ export function CameraWidget() {
             <div className="absolute inset-0 pointer-events-none" style={{
               backgroundImage: 'repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.15) 2px, rgba(0,0,0,0.15) 4px)',
             }} />
-            {/* Screen content - gradient placeholder */}
+            {/* Screen content */}
             <div className="absolute inset-0" style={{
               background: 'linear-gradient(135deg, #1a4060 0%, #2d1040 40%, #1a0030 70%, #0a2040 100%)',
             }} />
-            {/* Pink corner grid overlay */}
+            {/* Viewfinder Grid */}
             <div className="absolute inset-0 opacity-20" style={{
               backgroundImage: 'linear-gradient(rgba(255,0,170,1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,170,1) 1px, transparent 1px)',
               backgroundSize: '12px 12px',
@@ -156,67 +244,69 @@ export function CameraWidget() {
             color: 'rgba(255,0,170,0.7)',
             letterSpacing: 2,
           }}>
-            CYBER-CAM 2000
+            CYBER-CAM PROJECTS
           </div>
-
-          {/* Strap lug left */}
-          <div className="absolute top-[10px] left-[-5px] w-[8px] h-[20px] rounded-sm" style={{
-            background: 'linear-gradient(90deg, #1a0010, #2a0018)',
-            border: '1px solid rgba(255,0,170,0.4)',
-          }} />
-          {/* Strap lug right */}
-          <div className="absolute top-[10px] right-[-5px] w-[8px] h-[20px] rounded-sm" style={{
-            background: 'linear-gradient(90deg, #2a0018, #1a0010)',
-            border: '1px solid rgba(255,0,170,0.4)',
-          }} />
         </div>
 
-        {/* Hover cursor hand indicator */}
-        <motion.div
-          initial={{ opacity: 0, y: 4 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="absolute -bottom-8 left-1/2 -translate-x-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
-        >
-          <span className="font-mono text-[10px] text-primary tracking-widest">[ CLICK ]</span>
-        </motion.div>
-
-        {/* Label below */}
+        {/* Label below: Big, Bold, and Crystal Clear */}
         <span
-          className="font-mono text-[10px] text-primary/60 tracking-widest uppercase group-hover:text-primary transition-colors"
-          style={{ marginTop: 4 }}
+          className="font-mono text-sm sm:text-base font-black text-primary drop-shadow-[0_0_10px_rgba(255,0,170,0.9)] tracking-widest uppercase"
+          style={{ marginTop: 2 }}
         >
-          GALLERY.exe
+          PROJECTS.exe
         </span>
       </motion.div>
 
       <AnimatePresence>
         {isOpen && (
-          <DraggableWindow title="Gallery_of_Achievements" onClose={() => setIsOpen(false)} initialPosition={{ x: 180, y: 60 }} id="gallery">
-            <div className="grid grid-cols-2 gap-6 p-4 max-h-[60vh] overflow-y-auto">
-              {[
-                { name: 'PROJECT_01.dat', tech: 'React · TypeScript · Node.js', color: 'from-primary/80 to-purple-800' },
-                { name: 'PROJECT_02.dat', tech: 'Next.js · PostgreSQL · Drizzle', color: 'from-purple-700 to-pink-900' },
-                { name: 'PROJECT_03.dat', tech: 'Three.js · WebGL · GSAP', color: 'from-pink-800 to-violet-900' },
-                { name: 'PROJECT_04.dat', tech: 'Python · FastAPI · Docker', color: 'from-violet-800 to-primary/60' },
-              ].map((p, i) => (
+          <DraggableWindow 
+            title="SYSTEM_PROJECTS.dat" 
+            onClose={() => setIsOpen(false)} 
+            initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 430 : 260, y: 60 }} 
+            id="gallery"
+            className="w-[860px]"
+            zIndexOverride={300}
+            onlyCloseControl={true}
+          >
+            <div className="grid grid-cols-2 gap-5 p-4 max-h-[70vh] overflow-y-auto pr-2 scrollbar-thin select-text">
+              {projects.map((p, i) => (
                 <motion.div
                   key={i}
-                  className={`bg-white p-2 pb-8 relative`}
-                  style={{
-                    transform: `rotate(${i % 2 === 0 ? -2 : 2}deg)`,
-                    boxShadow: '0 10px 20px rgba(0,0,0,0.6), 0 0 15px rgba(255,0,170,0.3)',
-                    border: '2px solid rgba(255,0,170,0.5)',
-                  }}
-                  whileHover={{ rotate: 0, y: -8, scale: 1.04, zIndex: 50 }}
+                  className="p-5 border border-primary/30 hover:border-primary bg-black/60 shadow-[0_0_15px_rgba(255,0,170,0.1)] hover:shadow-[0_0_25px_rgba(255,0,170,0.3)] transition-all duration-300 flex flex-col justify-between"
+                  whileHover={{ y: -4 }}
                 >
-                  <div className={`w-full aspect-video bg-gradient-to-br ${p.color} mb-2 relative overflow-hidden`}>
-                    <div className="absolute inset-0" style={{
-                      backgroundImage: 'linear-gradient(rgba(255,0,170,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,0,170,0.1) 1px, transparent 1px)',
-                      backgroundSize: '10px 10px',
-                    }} />
+                  <div>
+                    {/* Project Header */}
+                    <div className="border-b border-primary/20 pb-2.5 mb-3.5">
+                      <h3 className="font-heading text-xl font-black text-primary tracking-wide drop-shadow-[0_0_12px_rgba(255,0,170,0.65)] leading-snug uppercase">
+                        <a href={p.github} target="_blank" rel="noopener noreferrer" className="hover:underline hover:text-white transition-colors cursor-pointer">
+                          {p.name}
+                        </a>
+                      </h3>
+                      <span className="font-mono text-xs text-gray-300 block mt-2 tracking-widest font-black">
+                        {p.meta}
+                      </span>
+                    </div>
+
+                    {/* Bullet Points */}
+                    <ul className="list-disc pl-5 font-sans text-sm sm:text-[14px] space-y-2 text-gray-300 leading-relaxed mb-4.5 font-normal">
+                      {p.desc.map((bullet, idx) => (
+                        <li key={idx}>{bullet}</li>
+                      ))}
+                    </ul>
                   </div>
-                  <p className="font-mono text-black text-xs font-bold">{p.name}</p>
-                  <p className="font-mono text-gray-500 text-[9px] mt-0.5">{p.tech}</p>
+
+                  {/* Tech stack tags */}
+                  <div className="flex flex-wrap gap-1.5 mt-auto pt-2.5 border-t border-primary/10">
+                    {p.tech.map((tag, tagIdx) => (
+                      <span 
+                        key={tagIdx} 
+                        className="px-2.5 py-1 text-[11px] font-mono border border-accent/40 text-accent bg-accent/5 rounded font-black tracking-wide"
+                      >
+                        {tag}
+                      </span>
+                    ))}
+                  </div>
                 </motion.div>
               ))}
             </div>

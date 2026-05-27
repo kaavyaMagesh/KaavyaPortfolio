@@ -8,23 +8,19 @@ export function ContactWidget() {
   if (!isOpen) return null;
 
   return (
-    <DraggableWindow title="CONTACT.sys" onClose={() => setIsOpen(false)} initialPosition={{ x: 40, y: window.innerHeight - 250 }} id="contact">
-      <div className="flex flex-col gap-4 font-mono text-sm">
-        <a href="mailto:cyber@hacker.net" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-email">
-          <Mail size={16} className="text-primary group-hover:animate-pulse-glow" />
-          <span>cyber@hacker.net</span>
+    <DraggableWindow title="CONTACT.sys" onClose={() => setIsOpen(false)} initialPosition={{ x: 32, y: typeof window !== "undefined" ? window.innerHeight - 300 : 650 }} id="contact">
+      <div className="flex flex-col gap-4.5 font-mono text-base font-medium">
+        <a href="mailto:kaavyamagesh1609@gmail.com" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-email">
+          <Mail size={22} className="text-primary group-hover:animate-pulse-glow" />
+          <span className="tracking-wide">kaavyamagesh1609@gmail.com</span>
         </a>
-        <a href="tel:+15550000000" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-phone">
-          <Phone size={16} className="text-primary group-hover:animate-pulse-glow" />
-          <span>+1 (555) 000-0000</span>
+        <a href="https://github.com/kaavyaMagesh" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-github">
+          <Github size={22} className="text-primary group-hover:animate-pulse-glow" />
+          <span className="tracking-wide">github.com/kaavyaMagesh</span>
         </a>
-        <a href="https://github.com" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-github">
-          <Github size={16} className="text-primary group-hover:animate-pulse-glow" />
-          <span>github.com/cyber</span>
-        </a>
-        <a href="https://linkedin.com" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-linkedin">
-          <Linkedin size={16} className="text-primary group-hover:animate-pulse-glow" />
-          <span>linkedin.com/in/cyber</span>
+        <a href="https://www.linkedin.com/in/kaavyashri-magesh-327106313/" target="_blank" rel="noreferrer" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-linkedin">
+          <Linkedin size={22} className="text-primary group-hover:animate-pulse-glow" />
+          <span className="tracking-wide">linkedin.com/in/kaavyashri-magesh-327106313</span>
         </a>
       </div>
     </DraggableWindow>
