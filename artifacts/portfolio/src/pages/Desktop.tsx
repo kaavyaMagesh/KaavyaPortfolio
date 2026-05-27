@@ -25,6 +25,15 @@ export default function Desktop() {
     return () => window.removeEventListener("open-about", handleOpenAbout);
   }, []);
 
+  // Ping visitor tracking endpoint when portfolio loads
+  useEffect(() => {
+    if (bootComplete) {
+      fetch("/api/visitors/ping", { method: "POST" }).catch(() => {
+        // Silently fail — analytics should never break the portfolio
+      });
+    }
+  }, [bootComplete]);
+
   const handleCommClick = () => {
     setAboutMeOpen(prev => !prev);
     setCommNotificationCount(0);
