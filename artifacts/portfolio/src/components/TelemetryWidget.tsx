@@ -43,7 +43,7 @@ export function TelemetryWidget() {
         <div className="col-span-4 flex flex-col items-center justify-center border-2 border-primary/30 p-2 bg-primary/5 relative overflow-hidden group hover:border-primary/60 transition-all duration-300">
           <div className="absolute inset-0 bg-gradient-to-t from-primary/15 to-transparent pointer-events-none" />
           <span className="font-heading text-3xl font-black text-primary drop-shadow-[0_0_10px_rgba(255,0,170,0.8)]">
-            8.9
+            8.6
           </span>
           <span className="font-mono text-sm text-primary-foreground font-semibold mt-1 border-t border-primary/20 pt-0.5 w-full text-center tracking-wider">
             CGPA
