@@ -177,6 +177,7 @@ export function AboutMeWidget({ isOpen, onClose }: AboutMeWidgetProps) {
       initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 275 : 250, y: typeof window !== "undefined" ? window.innerHeight - 680 : 150 }}
       id="about-me"
       className="md:w-[550px] w-full border-primary/50 bg-black/90 shadow-[0_0_30px_rgba(255,0,170,0.35)] z-[90]"
+      inlineOnMobile={true}
     >
       <div className="flex flex-col gap-5 p-2 font-mono text-sm leading-relaxed max-h-[520px] overflow-y-auto pr-1 select-text scrollbar-thin">
         {/* Holographic Intro Header */}

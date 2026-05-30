@@ -15,9 +15,10 @@ interface DraggableWindowProps {
   id?: string;
   zIndexOverride?: number;
   onlyCloseControl?: boolean;
+  inlineOnMobile?: boolean;
 }
 
-export function DraggableWindow({ title, onClose, onExpand, children, initialPosition = { x: 50, y: 50 }, className = "", id, zIndexOverride, onlyCloseControl = false }: DraggableWindowProps) {
+export function DraggableWindow({ title, onClose, onExpand, children, initialPosition = { x: 50, y: 50 }, className = "", id, zIndexOverride, onlyCloseControl = false, inlineOnMobile = false }: DraggableWindowProps) {
   const isMobile = useIsMobile();
   const { position, handleMouseDown, isDragging } = useDraggable(initialPosition);
   const [activeWindow, setActiveWindow] = useState<string>("");
@@ -51,18 +52,24 @@ export function DraggableWindow({ title, onClose, onExpand, children, initialPos
 
   return (
     <motion.div
-      initial={{ scale: 0.9, opacity: 0 }}
+      initial={inlineOnMobile && isMobile ? { scale: 1, opacity: 1 } : { scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
-      exit={{ scale: 0.9, opacity: 0 }}
-      style={isMobile ? {
-        position: 'fixed',
-        left: '4%',
-        right: '4%',
-        top: '8%',
-        width: '92vw',
-        maxHeight: '84vh',
-        zIndex: currentZIndex,
-      } : {
+      exit={inlineOnMobile && isMobile ? undefined : { scale: 0.9, opacity: 0 }}
+      style={isMobile ? (
+        inlineOnMobile ? {
+          position: 'relative',
+          width: '100%',
+          zIndex: 10,
+        } : {
+          position: 'fixed',
+          left: '4%',
+          right: '4%',
+          top: '8%',
+          width: '92vw',
+          maxHeight: '84vh',
+          zIndex: currentZIndex,
+        }
+      ) : {
         position: 'absolute',
         left: position.x,
         top: position.y,
@@ -94,10 +101,10 @@ export function DraggableWindow({ title, onClose, onExpand, children, initialPos
               <Square size={12} className="cursor-pointer hover:text-white" />
             </>
           )}
-          {onClose && <X size={16} className="cursor-pointer hover:text-white" onClick={onClose} data-testid={`close-${id || title.toLowerCase()}`} />}
+          {onClose && (!inlineOnMobile || !isMobile) && <X size={16} className="cursor-pointer hover:text-white" onClick={onClose} data-testid={`close-${id || title.toLowerCase()}`} />}
         </div>
       </div>
-      <div className="p-4 bg-black/60 grow overflow-y-auto max-h-[calc(84vh-40px)]">
+      <div className={`p-4 bg-black/60 grow overflow-y-auto ${inlineOnMobile && isMobile ? 'max-h-[600px]' : 'max-h-[calc(84vh-40px)]'}`}>
         {children}
       </div>
     </motion.div>

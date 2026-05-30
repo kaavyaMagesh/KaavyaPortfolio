@@ -63,6 +63,9 @@ export default function Desktop() {
         <div className="absolute inset-0 animate-in fade-in duration-1000 overflow-y-auto">
           {isMobile ? (
             <div className="flex flex-col gap-6 p-4 pb-28 max-w-lg mx-auto w-full select-none">
+              {/* About Me starts on top inline in the layout */}
+              <AboutMeWidget isOpen={aboutMeOpen} onClose={() => setAboutMeOpen(false)} />
+
               {/* Stack items inline inside a nice, clean list */}
               <div className="flex flex-col gap-6">
                 {/* Camera / Projects button Widget */}
@@ -91,7 +94,6 @@ export default function Desktop() {
               </div>
 
               {/* Modals triggered dynamically */}
-              <AboutMeWidget isOpen={aboutMeOpen} onClose={() => setAboutMeOpen(false)} />
               <ContactWidget />
             </div>
           ) : (
