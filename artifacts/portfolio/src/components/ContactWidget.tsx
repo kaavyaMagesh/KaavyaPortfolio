@@ -1,14 +1,29 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Mail, Phone, Github, Linkedin } from "lucide-react";
 import { DraggableWindow } from "./DraggableWindow";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function ContactWidget() {
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(true);
+
+  // Initialize closed on mobile to prevent overlapping modals on page load
+  useEffect(() => {
+    if (isMobile) {
+      setIsOpen(false);
+    }
+  }, [isMobile]);
 
   if (!isOpen) return null;
 
   return (
-    <DraggableWindow title="CONTACT.sys" onClose={() => setIsOpen(false)} initialPosition={{ x: 32, y: typeof window !== "undefined" ? window.innerHeight - 300 : 650 }} id="contact">
+    <DraggableWindow 
+      title="CONTACT.sys" 
+      onClose={() => setIsOpen(false)} 
+      initialPosition={{ x: 32, y: typeof window !== "undefined" ? window.innerHeight - 300 : 650 }} 
+      id="contact"
+      className="w-full md:w-[350px]"
+    >
       <div className="flex flex-col gap-4.5 font-mono text-base font-medium">
         <a href="mailto:kaavyamagesh1609@gmail.com" className="flex items-center gap-3 text-primary-foreground hover:text-primary transition-colors group" data-testid="contact-email">
           <Mail size={22} className="text-primary group-hover:animate-pulse-glow" />

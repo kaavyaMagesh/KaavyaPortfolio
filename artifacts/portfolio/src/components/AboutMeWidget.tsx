@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DraggableWindow } from "./DraggableWindow";
 import { Code, Server, Database, ChevronLeft, ChevronRight, Terminal, ExternalLink } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface AboutMeWidgetProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface AboutMeWidgetProps {
 }
 
 export function AboutMeWidget({ isOpen, onClose }: AboutMeWidgetProps) {
+  const isMobile = useIsMobile();
   const [isExpanded, setIsExpanded] = useState(false);
   const [activeCategory, setActiveCategory] = useState(0);
 
@@ -89,13 +91,13 @@ export function AboutMeWidget({ isOpen, onClose }: AboutMeWidgetProps) {
         onExpand={() => setIsExpanded(false)}
         initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 490 : 150, y: 60 }}
         id="about-me-expanded"
-        className="w-[980px] border-primary/50 bg-black/95 shadow-[0_0_40px_rgba(255,0,170,0.5)]"
+        className="md:w-[980px] w-full border-primary/50 bg-black/95 shadow-[0_0_40px_rgba(255,0,170,0.5)]"
         zIndexOverride={350}
       >
         <div className="flex flex-col gap-6 p-3 font-mono text-sm leading-relaxed max-h-[72vh] overflow-y-auto neon-scrollbar select-text">
           {/* Top Section: Bio */}
           <div className="border-b border-primary/30 pb-4">
-            <h2 className="font-heading text-2xl font-black tracking-wide text-white uppercase leading-none select-none">
+            <h2 className="font-heading text-xl sm:text-2xl font-black tracking-wide text-white uppercase leading-none select-none">
               HI, I'M <span className="bg-gradient-to-r from-primary via-pink-400 to-cyan-400 bg-clip-text text-transparent animate-pulse font-extrabold drop-shadow-[0_0_8px_rgba(255,0,170,0.5)]">KAAVYASHRI MAGESH</span>
             </h2>
             <p className="mt-3 font-sans text-sm sm:text-base text-foreground font-medium leading-relaxed">
@@ -108,7 +110,7 @@ export function AboutMeWidget({ isOpen, onClose }: AboutMeWidgetProps) {
             <div className="text-xs text-primary font-bold tracking-widest uppercase mb-3 border-b border-primary/20 pb-1 select-none">
               TECH STACK
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {categories.map((cat) => (
                 <div
                   key={cat.title}
@@ -140,7 +142,7 @@ export function AboutMeWidget({ isOpen, onClose }: AboutMeWidgetProps) {
             <div className="text-xs text-cyan-400 font-bold tracking-widest uppercase border-b border-cyan-500/30 pb-1 select-none">
               PROJECTS
             </div>
-            <div className="grid grid-cols-2 gap-4 pb-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-4">
               {projects.map((proj, idx) => (
                 <div 
                   key={idx} 
@@ -174,12 +176,12 @@ export function AboutMeWidget({ isOpen, onClose }: AboutMeWidgetProps) {
       onExpand={() => setIsExpanded(true)}
       initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 275 : 250, y: typeof window !== "undefined" ? window.innerHeight - 680 : 150 }}
       id="about-me"
-      className="w-[550px] border-primary/50 bg-black/90 shadow-[0_0_30px_rgba(255,0,170,0.35)] z-[90]"
+      className="md:w-[550px] w-full border-primary/50 bg-black/90 shadow-[0_0_30px_rgba(255,0,170,0.35)] z-[90]"
     >
       <div className="flex flex-col gap-5 p-2 font-mono text-sm leading-relaxed max-h-[520px] overflow-y-auto pr-1 select-text scrollbar-thin">
         {/* Holographic Intro Header */}
         <div className="relative border-b border-primary/30 pb-4 mb-1">
-          <h2 className="font-heading text-2xl font-black tracking-wide text-white uppercase leading-none select-none">
+          <h2 className="font-heading text-xl sm:text-2xl font-black tracking-wide text-white uppercase leading-none select-none">
             HI, I'M <span className="bg-gradient-to-r from-primary via-pink-400 to-cyan-400 bg-clip-text text-transparent animate-pulse font-extrabold drop-shadow-[0_0_8px_rgba(255,0,170,0.5)]">KAAVYASHRI MAGESH</span>
           </h2>
 
@@ -200,7 +202,7 @@ export function AboutMeWidget({ isOpen, onClose }: AboutMeWidgetProps) {
             className="relative w-full h-[180px] flex items-center justify-center overflow-hidden"
             style={{ perspective: "1000px" }}
           >
-            <div className="relative w-[340px] h-[150px] flex items-center justify-center">
+            <div className="relative w-full max-w-[340px] h-[150px] flex items-center justify-center">
               <AnimatePresence mode="popLayout">
                 {categories.map((cat, idx) => {
                   if (idx !== activeCategory) return null;

@@ -3,6 +3,8 @@ import { motion } from "framer-motion";
 import { X, Minus, Square, Maximize2 } from "lucide-react";
 import { useDraggable } from "@/hooks/useDraggable";
 
+import { useIsMobile } from "@/hooks/use-mobile";
+
 interface DraggableWindowProps {
   title: string;
   onClose?: () => void;
@@ -16,6 +18,7 @@ interface DraggableWindowProps {
 }
 
 export function DraggableWindow({ title, onClose, onExpand, children, initialPosition = { x: 50, y: 50 }, className = "", id, zIndexOverride, onlyCloseControl = false }: DraggableWindowProps) {
+  const isMobile = useIsMobile();
   const { position, handleMouseDown, isDragging } = useDraggable(initialPosition);
   const [activeWindow, setActiveWindow] = useState<string>("");
 
@@ -51,19 +54,27 @@ export function DraggableWindow({ title, onClose, onExpand, children, initialPos
       initial={{ scale: 0.9, opacity: 0 }}
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0.9, opacity: 0 }}
-      style={{
+      style={isMobile ? {
+        position: 'fixed',
+        left: '4%',
+        right: '4%',
+        top: '8%',
+        width: '92vw',
+        maxHeight: '84vh',
+        zIndex: currentZIndex,
+      } : {
         position: 'absolute',
         left: position.x,
         top: position.y,
         zIndex: currentZIndex,
       }}
-      className={`cyber-window rounded-none overflow-hidden flex flex-col min-w-[300px] ${className}`}
+      className={`cyber-window rounded-none overflow-hidden flex flex-col min-w-[280px] ${className}`}
       data-testid={`window-${id || title.toLowerCase()}`}
       onMouseDown={handleWindowClick}
     >
       <div 
-        className="bg-primary/20 border-b border-primary/40 p-2 flex items-center justify-between cursor-move"
-        onMouseDown={handleMouseDown}
+        className={`bg-primary/20 border-b border-primary/40 p-2 flex items-center justify-between ${isMobile ? '' : 'cursor-move'}`}
+        onMouseDown={isMobile ? undefined : handleMouseDown}
       >
         <div className="flex gap-2 items-center">
           <div className="flex gap-1.5 ml-1">
@@ -74,10 +85,10 @@ export function DraggableWindow({ title, onClose, onExpand, children, initialPos
           <span className="font-heading text-xs font-bold tracking-widest text-primary ml-2 uppercase">{title}</span>
         </div>
         <div className="flex items-center gap-1.5 text-primary">
-          {onExpand && (
+          {onExpand && !isMobile && (
             <Maximize2 size={13} className="cursor-pointer hover:text-white mr-1" onClick={onExpand} />
           )}
-          {!onlyCloseControl && !onExpand && (
+          {!onlyCloseControl && !onExpand && !isMobile && (
             <>
               <Minus size={14} className="cursor-pointer hover:text-white" />
               <Square size={12} className="cursor-pointer hover:text-white" />
@@ -86,7 +97,7 @@ export function DraggableWindow({ title, onClose, onExpand, children, initialPos
           {onClose && <X size={16} className="cursor-pointer hover:text-white" onClick={onClose} data-testid={`close-${id || title.toLowerCase()}`} />}
         </div>
       </div>
-      <div className="p-4 bg-black/60 grow">
+      <div className="p-4 bg-black/60 grow overflow-y-auto max-h-[calc(84vh-40px)]">
         {children}
       </div>
     </motion.div>

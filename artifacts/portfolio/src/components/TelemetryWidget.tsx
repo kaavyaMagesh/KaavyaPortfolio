@@ -1,6 +1,8 @@
 import { motion } from "framer-motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function TelemetryWidget() {
+  const isMobile = useIsMobile();
   const courses = [
     "Data Structures & Algorithms",
     "Machine Learning",
@@ -13,7 +15,7 @@ export function TelemetryWidget() {
 
   return (
     <motion.div 
-      className="absolute bottom-20 right-10 cyber-window p-4 w-[510px] bg-black/90 border-2 border-primary/50 shadow-[0_0_25px_rgba(255,0,170,0.25)]"
+      className={isMobile ? "relative cyber-window p-4 w-full bg-black/90 border-2 border-primary/50 shadow-[0_0_25px_rgba(255,0,170,0.25)]" : "absolute bottom-20 right-10 cyber-window p-4 w-[510px] bg-black/90 border-2 border-primary/50 shadow-[0_0_25px_rgba(255,0,170,0.25)]"}
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1 }}

@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Award, ExternalLink, Trophy, Shield, Link2 } from "lucide-react";
 import { DraggableWindow } from "./DraggableWindow";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function PolaroidStack() {
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
   const [order, setOrder] = useState([0, 1, 2]);
 
@@ -30,7 +32,7 @@ export function PolaroidStack() {
     <>
       {/* Photo stack wrapper placed on the right of the camera */}
       <div
-        className="absolute top-8 left-[360px] w-[240px] h-[220px] flex flex-col items-center justify-between cursor-pointer group z-40"
+        className={isMobile ? "relative w-[240px] h-[220px] flex flex-col items-center justify-between cursor-pointer group z-40 mx-auto" : "absolute top-8 left-[360px] w-[240px] h-[220px] flex flex-col items-center justify-between cursor-pointer group z-40"}
         onClick={() => setIsOpen(true)}
       >
         <div className="relative w-full h-[160px]">
@@ -97,7 +99,7 @@ export function PolaroidStack() {
             onClose={() => setIsOpen(false)}
             initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 250 : 450, y: 150 }}
             id="window-achievements"
-            className="w-[500px]"
+            className="md:w-[500px] w-full"
           >
             <div className="flex flex-col gap-5 font-mono text-sm sm:text-base text-primary-foreground max-h-[50vh] overflow-y-auto pr-1">
               <div className="border-b border-primary/30 pb-2.5 mb-1 flex items-center gap-2">

@@ -2,8 +2,10 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Folder, Download, Maximize2, ExternalLink } from "lucide-react";
 import { DraggableWindow } from "./DraggableWindow";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function FolderIcons() {
+  const isMobile = useIsMobile();
   const [isExpExpanded, setIsExpExpanded] = useState(false);
   const [activeWindow, setActiveWindow] = useState<string | null>(null);
 
@@ -16,7 +18,7 @@ export function FolderIcons() {
     <>
       {/* Permanent, Non-Draggable Locked Experience Window Pinned to Top-Right */}
       <div 
-        className="absolute top-6 right-10 w-[600px] z-30 cyber-window rounded-none overflow-hidden flex flex-col border-amber-500/40 bg-black/90 shadow-[0_0_25px_rgba(234,179,8,0.25)] hover:shadow-[0_0_35px_rgba(234,179,8,0.45)] hover:border-amber-500 transition-all duration-300 cursor-pointer group/exp"
+        className={isMobile ? "relative w-full z-30 cyber-window rounded-none overflow-hidden flex flex-col border-amber-500/40 bg-black/90 shadow-[0_0_25px_rgba(234,179,8,0.25)] hover:shadow-[0_0_35px_rgba(234,179,8,0.45)] hover:border-amber-500 transition-all duration-300 cursor-pointer group/exp" : "absolute top-6 right-10 w-[600px] z-30 cyber-window rounded-none overflow-hidden flex flex-col border-amber-500/40 bg-black/90 shadow-[0_0_25px_rgba(234,179,8,0.25)] hover:shadow-[0_0_35px_rgba(234,179,8,0.45)] hover:border-amber-500 transition-all duration-300 cursor-pointer group/exp"}
         data-testid="window-experience"
         onClick={() => setIsExpExpanded(true)}
       >
@@ -37,7 +39,7 @@ export function FolderIcons() {
           <div className="flex flex-col gap-4 max-h-[460px] overflow-y-auto pr-1.5 scrollbar-thin select-text">
             {/* Digital Post-it Note */}
             <div 
-              className="relative p-8 bg-yellow-100 dark:bg-yellow-250 text-neutral-900 border border-yellow-300 shadow-xl transform rotate-0.5 hover:rotate-0 transition-transform duration-300 min-h-[250px] flex flex-col justify-between"
+              className="relative p-6 sm:p-8 bg-yellow-100 dark:bg-yellow-250 text-neutral-900 border border-yellow-300 shadow-xl transform rotate-0.5 hover:rotate-0 transition-transform duration-300 min-h-[250px] flex flex-col justify-between"
               style={{
                 boxShadow: 'inset 0 0 20px rgba(0,0,0,0.05), 4px 4px 20px rgba(0,0,0,0.3)',
                 clipPath: 'polygon(0% 0%, 100% 0%, 100% 92%, 92% 100%, 0% 100%)'
@@ -58,11 +60,11 @@ export function FolderIcons() {
  
               <div className="flex flex-col gap-4.5 mt-3">
                 <div className="border-b border-dashed border-neutral-400 pb-3">
-                  <h3 className="font-heading text-lg font-black text-yellow-950 tracking-wide uppercase leading-tight">
+                  <h3 className="font-heading text-base sm:text-lg font-black text-yellow-950 tracking-wide uppercase leading-tight">
                     Edunet Foundation (IBM SkillsBuild)
                   </h3>
-                  <div className="flex justify-between items-center mt-3">
-                    <span className="font-mono text-sm font-black text-amber-900 tracking-wider">AI Intern (Remote)</span>
+                  <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-3 gap-2">
+                    <span className="font-mono text-xs sm:text-sm font-black text-amber-900 tracking-wider">AI Intern (Remote)</span>
                     <div className="flex items-center gap-2">
                       <a 
                         href="https://drive.google.com/file/d/1x7-q2GGf4IVYSQG70uhIlhrqx_o2l1ry/view?usp=drivesdk" 
@@ -74,12 +76,12 @@ export function FolderIcons() {
                         <ExternalLink size={10} />
                         VERIFY
                       </a>
-                      <span className="font-mono text-[11px] font-black text-neutral-800 bg-yellow-355/80 px-2.5 py-0.75 rounded border border-yellow-400/40">June 2025 - Jul 2025</span>
+                      <span className="font-mono text-[10px] sm:text-[11px] font-black text-neutral-800 bg-yellow-355/80 px-2.5 py-0.75 rounded border border-yellow-400/40">June 2025 - Jul 2025</span>
                     </div>
                   </div>
                 </div>
  
-                <ul className="list-disc pl-5 font-sans text-sm sm:text-[15px] space-y-3.5 text-neutral-800 leading-relaxed font-medium">
+                <ul className="list-disc pl-5 font-sans text-xs sm:text-sm md:text-[15px] space-y-3 text-neutral-800 leading-relaxed font-medium">
                   <li>Developed end-to-end machine learning pipelines using real-world datasets.</li>
                   <li>Performed data cleaning, feature engineering, model evaluation, and deployment.</li>
                 </ul>
@@ -97,7 +99,7 @@ export function FolderIcons() {
             onClose={() => setIsExpExpanded(false)} 
             initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 320 : 300, y: 120 }} 
             id="window-experience-expanded"
-            className="w-[640px] border-amber-500 bg-black/95 shadow-[0_0_40px_rgba(234,179,8,0.4)]"
+            className="md:w-[640px] w-full border-amber-500 bg-black/95 shadow-[0_0_40px_rgba(234,179,8,0.4)]"
             zIndexOverride={300}
             onlyCloseControl={true}
           >
@@ -106,7 +108,7 @@ export function FolderIcons() {
               <div className="max-h-[500px] overflow-y-auto pr-1.5 scrollbar-thin scrollbar-thumb-amber-500/30 scrollbar-track-transparent">
                 {/* Digital Post-it Note */}
                 <div 
-                  className="relative p-8 bg-yellow-100 text-neutral-900 border border-yellow-300 shadow-xl flex flex-col justify-between min-h-[300px]"
+                  className="relative p-6 sm:p-8 bg-yellow-100 text-neutral-900 border border-yellow-300 shadow-xl flex flex-col justify-between min-h-[300px]"
                   style={{
                     boxShadow: 'inset 0 0 20px rgba(0,0,0,0.05), 4px 4px 20px rgba(0,0,0,0.3)',
                     clipPath: 'polygon(0% 0%, 100% 0%, 100% 92%, 92% 100%, 0% 100%)'
@@ -127,11 +129,11 @@ export function FolderIcons() {
 
                   <div className="flex flex-col gap-4.5 mt-3">
                     <div className="border-b border-dashed border-neutral-400 pb-3">
-                      <h3 className="font-heading text-lg font-black text-yellow-950 tracking-wide uppercase leading-tight">
+                      <h3 className="font-heading text-base sm:text-lg font-black text-yellow-950 tracking-wide uppercase leading-tight">
                         Edunet Foundation (IBM SkillsBuild)
                       </h3>
-                      <div className="flex justify-between items-center mt-3">
-                        <span className="font-mono text-sm font-black text-amber-900 tracking-wider">AI Intern (Remote)</span>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mt-3 gap-2">
+                        <span className="font-mono text-xs sm:text-sm font-black text-amber-900 tracking-wider">AI Intern (Remote)</span>
                         <div className="flex items-center gap-2">
                           <a 
                             href="https://drive.google.com/file/d/1x7-q2GGf4IVYSQG70uhIlhrqx_o2l1ry/view?usp=drivesdk" 
@@ -142,12 +144,12 @@ export function FolderIcons() {
                             <ExternalLink size={10} />
                             VERIFY
                           </a>
-                          <span className="font-mono text-[11px] font-black text-neutral-800 bg-yellow-355/80 px-2.5 py-0.75 rounded border border-yellow-400/40">June 2025 - Jul 2025</span>
+                          <span className="font-mono text-[10px] sm:text-[11px] font-black text-neutral-800 bg-yellow-355/80 px-2.5 py-0.75 rounded border border-yellow-400/40">June 2025 - Jul 2025</span>
                         </div>
                       </div>
                     </div>
 
-                    <ul className="list-disc pl-5 font-sans text-sm sm:text-[15px] space-y-3.5 text-neutral-800 leading-relaxed font-medium">
+                    <ul className="list-disc pl-5 font-sans text-xs sm:text-sm md:text-[15px] space-y-3.5 text-neutral-800 leading-relaxed font-medium">
                       <li>Developed end-to-end machine learning pipelines using real-world datasets.</li>
                       <li>Performed data cleaning, feature engineering, model evaluation, and deployment.</li>
                     </ul>
@@ -160,7 +162,7 @@ export function FolderIcons() {
       </AnimatePresence>
 
       {/* Folders laid out horizontally (adjacent to each other) shifted downwards */}
-      <div className="absolute top-[450px] left-8 flex flex-row gap-5">
+      <div className={isMobile ? "relative flex flex-row justify-center gap-5 my-6 w-full" : "absolute top-[450px] left-8 flex flex-row gap-5"}>
         {folders.map((folder, index) => (
           <motion.div
             key={folder.id}

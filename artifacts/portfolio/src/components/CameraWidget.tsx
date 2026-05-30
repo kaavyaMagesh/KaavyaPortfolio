@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { DraggableWindow } from "./DraggableWindow";
 import { Folder, Code, Terminal, Layers } from "lucide-react";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export function CameraWidget() {
+  const isMobile = useIsMobile();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
@@ -95,12 +97,14 @@ export function CameraWidget() {
   return (
     <>
       <motion.div
-        className="absolute top-8 left-8 flex flex-col items-center gap-2 cursor-pointer group"
-        initial={{ scale: 1.25 }}
-        whileHover={{ scale: 1.30 }}
+        className={isMobile ? "relative flex flex-col items-center gap-2 cursor-pointer group" : "absolute top-8 left-8 flex flex-col items-center gap-2 cursor-pointer group"}
+        initial={{ scale: isMobile ? 1 : 1.25 }}
+        whileHover={{ scale: isMobile ? 1.05 : 1.30 }}
         onClick={() => setIsOpen(true)}
         data-testid="widget-camera"
-        style={{ 
+        style={isMobile ? {
+          filter: 'drop-shadow(0 0 18px rgba(255,0,170,0.55))',
+        } : { 
           filter: 'drop-shadow(0 0 18px rgba(255,0,170,0.55))',
           transformOrigin: 'top left'
         }}
@@ -264,11 +268,11 @@ export function CameraWidget() {
             onClose={() => setIsOpen(false)} 
             initialPosition={{ x: typeof window !== "undefined" ? window.innerWidth / 2 - 430 : 260, y: 60 }} 
             id="gallery"
-            className="w-[860px]"
+            className="md:w-[860px] w-full"
             zIndexOverride={300}
             onlyCloseControl={true}
           >
-            <div className="grid grid-cols-2 gap-5 p-4 max-h-[70vh] overflow-y-auto pr-2 scrollbar-thin select-text">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-4 max-h-[70vh] overflow-y-auto pr-2 scrollbar-thin select-text">
               {projects.map((p, i) => (
                 <motion.div
                   key={i}
