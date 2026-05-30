@@ -18,13 +18,6 @@ export default function Desktop() {
   const [mediaOpen, setMediaOpen] = useState(false);
   const [commNotificationCount, setCommNotificationCount] = useState(1);
 
-  // Initialize About Me closed on mobile to prevent overlapping widgets on load
-  useEffect(() => {
-    if (bootComplete && isMobile) {
-      setAboutMeOpen(false);
-    }
-  }, [bootComplete, isMobile]);
-
   useEffect(() => {
     const handleOpenAbout = () => {
       setAboutMeOpen(true);
@@ -70,42 +63,6 @@ export default function Desktop() {
         <div className="absolute inset-0 animate-in fade-in duration-1000 overflow-y-auto">
           {isMobile ? (
             <div className="flex flex-col gap-6 p-4 pb-28 max-w-lg mx-auto w-full select-none">
-              {/* Sleek Mobile Header / Status Info */}
-              <div className="border border-primary/40 bg-black/80 p-4 font-mono text-xs flex justify-between items-center text-primary shadow-[0_0_15px_rgba(255,0,170,0.25)]">
-                <span className="font-heading font-black tracking-widest text-[10px]">CYBER_PORTFOLIO v1.2</span>
-                <div className="flex items-center gap-1.5 font-bold">
-                  <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
-                  <span>ONLINE_SECTOR</span>
-                </div>
-              </div>
-
-              {/* Bio / Profile Section built into the mobile dashboard feed */}
-              <div className="border border-primary/50 bg-black/90 p-5 shadow-[0_0_20px_rgba(255,0,170,0.25)] flex flex-col gap-4 font-mono">
-                <h2 className="font-heading text-lg font-black text-white leading-tight">
-                  KAAVYASHRI MAGESH
-                </h2>
-                <p className="font-sans text-xs text-gray-300 leading-relaxed font-semibold">
-                  Computer Science Major · Building intelligent systems with real-world impact.
-                </p>
-                <div className="flex gap-2.5">
-                  <button 
-                    onClick={() => setAboutMeOpen(true)}
-                    className="flex-1 py-2 border border-primary text-primary text-xs font-heading font-bold hover:bg-primary/20 transition-all uppercase"
-                  >
-                    ABOUT_ME
-                  </button>
-                  <button 
-                    onClick={() => {
-                      const event = new CustomEvent("open-projects");
-                      window.dispatchEvent(event);
-                    }}
-                    className="flex-1 py-2 border border-primary text-primary text-xs font-heading font-bold hover:bg-primary/20 transition-all uppercase"
-                  >
-                    PROJECTS.exe
-                  </button>
-                </div>
-              </div>
-
               {/* Stack items inline inside a nice, clean list */}
               <div className="flex flex-col gap-6">
                 {/* Camera / Projects button Widget */}
